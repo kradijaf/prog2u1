@@ -1,6 +1,5 @@
 # Prvá časť, načítanie dát, vytvorenie tried, vytvorenie objektov
 
-
 import csv
 
 class Stop():
@@ -95,18 +94,20 @@ class Route():
     def refToTrips(self, refToTrips):
         self.__refToTrips = refToTrips
 
-def createObjects():#(stopsFile,stopTimesFile,tripsFile,routesFile): # docstringy a open upraviť
-    #with open(stopsFile, encoding = "utf-8", newline = "") as sp, \
-    #    open(stopTimesFile, encoding = "utf-8", newline = "") as st, \
-    #    open(tripsFile, encoding = "utf-8", newline = "") as tr, \
-    #    open(routesFile, encoding = "utf-8", newline = "") as rt:
+# open files
+def createObjects(stopsFile,stopTimesFile,tripsFile,routesFile): # docstringy a open upraviť
+    with open(stopsFile, encoding = "utf-8", newline = "") as sp, \
+        open(stopTimesFile, encoding = "utf-8", newline = "") as st, \
+        open(tripsFile, encoding = "utf-8", newline = "") as tr, \
+        open(routesFile, encoding = "utf-8", newline = "") as rt:
 
     # ak sú súbory v inej zložke, do uvodzoviek dajte adresu
-    with open(r"C:\Users\andre\Desktop\Prog_python\stops.txt", encoding = "utf-8", newline = "") as sp, \
-        open(r"C:\Users\andre\Desktop\Prog_python\stop_times.txt", encoding = "utf-8", newline = "") as st, \
-        open(r"C:\Users\andre\Desktop\Prog_python\trips.txt", encoding = "utf-8", newline = "") as tr, \
-        open(r"C:\Users\andre\Desktop\Prog_python\routes.txt", encoding = "utf-8", newline = "") as rt:
+    #with open(r"C:\Users\andre\Desktop\Prog_python\stops.txt", encoding = "utf-8", newline = "") as sp, \
+    #    open(r"C:\Users\andre\Desktop\Prog_python\stop_times.txt", encoding = "utf-8", newline = "") as st, \
+    #    open(r"C:\Users\andre\Desktop\Prog_python\trips.txt", encoding = "utf-8", newline = "") as tr, \
+    #    open(r"C:\Users\andre\Desktop\Prog_python\routes.txt", encoding = "utf-8", newline = "") as rt:
         
+
         reader_sp = csv.reader(sp, delimiter=",")
         reader_st = csv.reader(st, delimiter=",")
         reader_tr = csv.reader(tr, delimiter=",")
@@ -128,8 +129,5 @@ def createObjects():#(stopsFile,stopTimesFile,tripsFile,routesFile): # docstring
         return stops, stopTimes, trips, routes
 
 # funkcia vráti 4 listy
-stops, stopTimes, trips, routes = createObjects() # funkcia potrebuje ako argumenty názvy súborov, alebo ich napíšte priamo do "with" časti
-
-print(trips[7].refToRoute)
-trips[7].refToRoute = 'asd'
-print(trips[7].refToRoute)
+stops, stopTimes, trips, routes = createObjects()
+# funkcia potrebuje ako argumenty názvy súborov, alebo ich napíšte priamo do "with" časti

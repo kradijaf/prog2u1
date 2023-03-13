@@ -11,11 +11,11 @@ class StopSegment:
     
     @property
     def start(self):
-        return self.__from
+        return self.__start
 
     @property
     def finnish(self):
-        return self.__to
+        return self.__finnish
     
     @property
     def counter(self):
@@ -35,7 +35,7 @@ class StopSegment:
 
 # Chtělo by to nějakou třídu pro listy a metody create_segments()) a busiest()
 # stopsSegmets - pole objektů třídy StopSegment
-
+stopSegments = []       # pole s objekty stopSegment
 
 def __ss_exist(self, start, finnish) -> StopSegment|bool:
     for ss in stopSegments:
@@ -86,7 +86,7 @@ def busiest(self, date : date) -> None:
     print(table)
     
 def create_StopSegments(self) -> None:
-    for item in trips:
+    for item in trips:              # pole objektů třídy Trip
         for idx in range(len(item.reftoSTs) - 1):
             result = __ss_exist(item.reftoSTs[idx].reftoStop.name, item.reftoSTs[idx + 1].reftoStop.name)
             if not result:

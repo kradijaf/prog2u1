@@ -29,7 +29,7 @@ class StopSegment:
     def trips(self):
         return self.__trips
     
-    def __add_trip(self, trip) -> None:
+    def add_trip(self, trip) -> None:
         self.__trips.append(trip)
         self.counter = self.counter + 1
 

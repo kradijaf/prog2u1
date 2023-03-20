@@ -76,7 +76,7 @@ def busiest(self, date : date) -> None:
     for item in stopSegments[:5]:
         table.add_row([item.start, item.to, item.count, ''])
         routes=[]
-        for trip in item.trips:
+        for trip in item.trips.values():
             routes.append(trip.reftoRoute.name)
         set_routes = set(routes)
         routes = list(set_routes)
@@ -86,7 +86,7 @@ def busiest(self, date : date) -> None:
     print(table)
     
 def create_StopSegments(self) -> None:
-    for item in trips:              # pole objektů třídy Trip
+    for item in trips.values():              # pole objektů třídy Trip
         for idx in range(len(item.reftoSTs) - 1):
             result = __ss_exist(item.reftoSTs[idx].reftoStop.name, item.reftoSTs[idx + 1].reftoStop.name)
             if not result:

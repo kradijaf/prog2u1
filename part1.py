@@ -197,9 +197,9 @@ def createObjects(stopsFile,stopTimesFile,tripsFile,routesFile) -> tuple[dict, d
                 stopTimesStop_id[(stLine[3])] = [temporaryObjectST]
             # same for stopTimesTrip_id
             if stLine[0] in stopTimesTrip_id:
-                stopTimesTrip_id[(stLine[3])].append(temporaryObjectST)
+                stopTimesTrip_id[(stLine[0])].append(temporaryObjectST)
             else:
-                stopTimesTrip_id[(stLine[3])] = [temporaryObjectST]
+                stopTimesTrip_id[(stLine[0])] = [temporaryObjectST]
         
         tripsRoute_id = {}
         tripsTrip_id = {}
@@ -208,9 +208,9 @@ def createObjects(stopsFile,stopTimesFile,tripsFile,routesFile) -> tuple[dict, d
                 continue
             temporaryObjectTR = Trip(trLine[0],trLine[2],trLine[3])
             if trLine[0] in tripsRoute_id:
-                tripsRoute_id[(stLine[3])].append(temporaryObjectTR)
+                tripsRoute_id[(trLine[0])].append(temporaryObjectTR)
             else:
-                tripsRoute_id[(stLine[3])] = [temporaryObjectTR]
+                tripsRoute_id[(trLine[0])] = [temporaryObjectTR]
             # tripsTrip_id
             tripsTrip_id[(trLine[2])] = temporaryObjectTR
 

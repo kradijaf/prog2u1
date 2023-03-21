@@ -85,12 +85,17 @@ class StopTime():
 class Trip():
     
     def __init__(self, trip_id, route_id, trip_headsign):
+        self.__trip_id = trip_id
         self.__refToSTs = []
         self.__refToRoute = route_id
         self.__tripHeadsign = trip_headsign
 
     def __str__(self):
-        return 'refToRoute: ' + self.__refToRoute + ', refToSTs: ' + self.__refToSTs + ', tripHeadSign: ' + str(self.__tripHeadsign)
+        return 'trip_id: ' + self.__trip_id + ', refToRoute: ' + self.__refToRoute + ', refToSTs: ' + self.__refToSTs + ', tripHeadSign: ' + str(self.__tripHeadsign)
+
+    @property
+    def trip_id(self):
+        return self.__trip_id
 
     @property
     def refToSTs(self):
@@ -115,13 +120,18 @@ class Trip():
 class Route():
 
     def __init__(self, route_id, route_short_name, route_long_name):
+        self.__route_id = route_id
         self.__refToTrips = []
         self.__name = route_short_name
         self.__routeLongName = route_long_name
 
     def __str__(self):
-        return 'refToTrips: ' + self.__refToTrips + ', name: ' + self.__name + ', routeLongName: ' + str(self.__routeLongName)
+        return 'route_id: ' + self.__route_id + ', refToTrips: ' + self.__refToTrips + ', name: ' + self.__name + ', routeLongName: ' + str(self.__routeLongName)
     
+    @property
+    def route_id(self):
+        return self.__route_id
+
     @property
     def refToTrips(self):
         return self.__refToTrips
@@ -139,7 +149,7 @@ class Route():
         self.__refToTrips = refToTrips
 
 # open files, create dictionaries of objects
-def createObjects():#(stopsFile,stopTimesFile,tripsFile,routesFile) -> tuple[dict, dict, dict, dict, dict, dict]: # docstringy a open upraviť
+def createObjects(stopsFile,stopTimesFile,tripsFile,routesFile) -> tuple[dict, dict, dict, dict, dict, dict]: # docstringy a open upraviť
     """Creates 4 dictionaries: 1. stops, 2. stopTimesStop_id, 3. stopTimesTrip_id, 4. tripsRoute_id, 5. tripsTrip_id, 6. routes:
     
     1. key: stop_id; value: class Stops object with atributes: id, name, stopLat, stopLon, refToSTs \n 
@@ -151,16 +161,16 @@ def createObjects():#(stopsFile,stopTimesFile,tripsFile,routesFile) -> tuple[dic
     
     Object atributes named "ref..." are supposed to be modified, they do NOT represent correct references to other objects at the time of their initialization"""
     
-    #with open(stopsFile, encoding = "utf-8", newline = "") as sp, \
-    #    open(stopTimesFile, encoding = "utf-8", newline = "") as st, \
-    #    open(tripsFile, encoding = "utf-8", newline = "") as tr, \
-    #    open(routesFile, encoding = "utf-8", newline = "") as rt:
+    with open(stopsFile, encoding = "utf-8", newline = "") as sp, \
+        open(stopTimesFile, encoding = "utf-8", newline = "") as st, \
+        open(tripsFile, encoding = "utf-8", newline = "") as tr, \
+        open(routesFile, encoding = "utf-8", newline = "") as rt:
 
     # ak sú súbory v inej zložke, do uvodzoviek dajte adresu
-    with open(r"C:\Users\andre\Desktop\Prog_python\stops.txt", encoding = "utf-8", newline = "") as sp, \
-        open(r"C:\Users\andre\Desktop\Prog_python\stop_times.txt", encoding = "utf-8", newline = "") as st, \
-        open(r"C:\Users\andre\Desktop\Prog_python\trips.txt", encoding = "utf-8", newline = "") as tr, \
-        open(r"C:\Users\andre\Desktop\Prog_python\routes.txt", encoding = "utf-8", newline = "") as rt:
+    #with open(r"C:\Users\andre\Desktop\Prog_python\stops.txt", encoding = "utf-8", newline = "") as sp, \
+    #    open(r"C:\Users\andre\Desktop\Prog_python\stop_times.txt", encoding = "utf-8", newline = "") as st, \
+    #    open(r"C:\Users\andre\Desktop\Prog_python\trips.txt", encoding = "utf-8", newline = "") as tr, \
+    #    open(r"C:\Users\andre\Desktop\Prog_python\routes.txt", encoding = "utf-8", newline = "") as rt:
         
         reader_sp = csv.reader(sp, delimiter=",")
         reader_st = csv.reader(st, delimiter=",")

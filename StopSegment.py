@@ -64,8 +64,7 @@ class StopSegment:
         self.__trips.append(trip)
         self.counter = self.counter + 1
 
-# Chtělo by to nějakou třídu pro listy a metody create_segments()) a busiest()
-# stopsSegmets - pole objektů třídy StopSegment
+# Remaining methods could be in some root class (e. g. class gtfs)
 stopSegments = {}       
 '''
 Dictionary  key:    stopSegment_id (joined stop_id of start and stop_id of finnish)
@@ -139,6 +138,11 @@ def busiest(self) -> None:
         table.add_row([item.start, item.to, item.count, ''])
         routes=[]
         for trip in item.trips:
+            """
+            in arguments must be date, object of class Calendar 
+            if trip.is_available(date):
+                routes.append(trip.reftoRoute.name)
+            """
             routes.append(trip.reftoRoute.name)
         set_routes = set(routes)
         routes = list(set_routes)
@@ -154,7 +158,7 @@ def create_StopSegments(self) -> None:
         Parameters:
         ----------
         None
-        
+
         Return value:
         -------------
         None
@@ -183,6 +187,27 @@ def create_StopSegments(self) -> None:
             start_id = stopTime.refToStop.id
         current_trip_id = key
 
+# This method might be in class Trip
+"""
+# Method assumed that object Trip contains atribute self.calendar which stored array with object of class Calendar
+def is_available(date) -> bool:
+    for calendar in self.calendar:
+        available = False
+        if calendar.days[date.weekday()]:
+            available = True
+        if date > calendar.start_date and date < calendar.end_date:
+            available = True
+        else:
+            available = False
+        for exception in calendar.exception: # calendar_date
+            if exception.date == date and exception.exception_type == 1:
+                    available = True
+            if exception.date == date and exception.exception_type == 2:
+                    return False
+        if available:
+            return True
+    return False
+"""
 # Sekvence volání metod: 
 #self.Create_stopSegments()
 #self.busiest()

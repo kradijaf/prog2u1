@@ -139,7 +139,7 @@ class Route():
         self.__refToTrips = refToTrips
 
 # open files, create dictionaries of objects
-def createObjects(stopsFile,stopTimesFile,tripsFile,routesFile) -> tuple[dict, dict, dict, dict, dict, dict]: # docstringy a open upraviť
+def createObjects():#(stopsFile,stopTimesFile,tripsFile,routesFile) -> tuple[dict, dict, dict, dict, dict, dict]: # docstringy a open upraviť
     """Creates 4 dictionaries: 1. stops, 2. stopTimesStop_id, 3. stopTimesTrip_id, 4. tripsRoute_id, 5. tripsTrip_id, 6. routes:
     
     1. key: stop_id; value: class Stops object with atributes: id, name, stopLat, stopLon, refToSTs \n 
@@ -150,16 +150,17 @@ def createObjects(stopsFile,stopTimesFile,tripsFile,routesFile) -> tuple[dict, d
     6. key: route_id; value: class Route object with atributes: refToTrips, name, routeLongName \n 
     
     Object atributes named "ref..." are supposed to be modified, they do NOT represent correct references to other objects at the time of their initialization"""
-    with open(stopsFile, encoding = "utf-8", newline = "") as sp, \
-        open(stopTimesFile, encoding = "utf-8", newline = "") as st, \
-        open(tripsFile, encoding = "utf-8", newline = "") as tr, \
-        open(routesFile, encoding = "utf-8", newline = "") as rt:
+    
+    #with open(stopsFile, encoding = "utf-8", newline = "") as sp, \
+    #    open(stopTimesFile, encoding = "utf-8", newline = "") as st, \
+    #    open(tripsFile, encoding = "utf-8", newline = "") as tr, \
+    #    open(routesFile, encoding = "utf-8", newline = "") as rt:
 
     # ak sú súbory v inej zložke, do uvodzoviek dajte adresu
-    #with open(r"C:\Users\andre\Desktop\Prog_python\stops.txt", encoding = "utf-8", newline = "") as sp, \
-    #    open(r"C:\Users\andre\Desktop\Prog_python\stop_times.txt", encoding = "utf-8", newline = "") as st, \
-    #    open(r"C:\Users\andre\Desktop\Prog_python\trips.txt", encoding = "utf-8", newline = "") as tr, \
-    #    open(r"C:\Users\andre\Desktop\Prog_python\routes.txt", encoding = "utf-8", newline = "") as rt:
+    with open(r"C:\Users\andre\Desktop\Prog_python\stops.txt", encoding = "utf-8", newline = "") as sp, \
+        open(r"C:\Users\andre\Desktop\Prog_python\stop_times.txt", encoding = "utf-8", newline = "") as st, \
+        open(r"C:\Users\andre\Desktop\Prog_python\trips.txt", encoding = "utf-8", newline = "") as tr, \
+        open(r"C:\Users\andre\Desktop\Prog_python\routes.txt", encoding = "utf-8", newline = "") as rt:
         
         reader_sp = csv.reader(sp, delimiter=",")
         reader_st = csv.reader(st, delimiter=",")
@@ -173,43 +174,35 @@ def createObjects(stopsFile,stopTimesFile,tripsFile,routesFile) -> tuple[dict, d
             stops[(spLine[0])] = Stop(spLine[0],spLine[1],spLine[2],spLine[3])
 
         stopTimesStop_id = {}
+        stopTimesTrip_id = {}
         for idx, stLine in enumerate(reader_st):
             if idx == 0:
                 continue
+            temporaryObjectST = StopTime(stLine[0],stLine[1],stLine[2],stLine[3])
             # if the key exists, append new object to the list in values
             if stLine[3] in stopTimesStop_id:
-                stopTimesStop_id[(stLine[3])].append(StopTime(stLine[0],stLine[1],stLine[2],stLine[3]))
+                stopTimesStop_id[(stLine[3])].append(temporaryObjectST)
             # else add a new key with an object inside a list 
             else:
-                stopTimesStop_id[(stLine[3])] = [StopTime(stLine[0],stLine[1],stLine[2],stLine[3])]
-
-        stopTimesTrip_id = {}
-        # seek(0) sa vráti na prvý riadok st, inak sa nenačítajú dáta, po predošlej smyčke sme na poslednom riadku
-        st.seek(0)
-        for idx, stLine in enumerate(reader_st):
-            if idx == 0:
-                continue
+                stopTimesStop_id[(stLine[3])] = [temporaryObjectST]
+            # same for stopTimesTrip_id
             if stLine[0] in stopTimesTrip_id:
-                stopTimesTrip_id[(stLine[3])].append(StopTime(stLine[0],stLine[1],stLine[2],stLine[3]))
+                stopTimesTrip_id[(stLine[3])].append(temporaryObjectST)
             else:
-                stopTimesTrip_id[(stLine[3])] = [StopTime(stLine[0],stLine[1],stLine[2],stLine[3])]
+                stopTimesTrip_id[(stLine[3])] = [temporaryObjectST]
         
         tripsRoute_id = {}
-        for idx, trLine in enumerate(reader_tr):
-            if idx == 0:
-                continue
-            if trLine[0] in tripsRoute_id:
-                tripsRoute_id[(stLine[3])].append(Trip(trLine[0],trLine[2],trLine[3]))
-            else:
-                tripsRoute_id[(stLine[3])] = [Trip(trLine[0],trLine[2],trLine[3])]
-
         tripsTrip_id = {}
-        # seek(0) sa vráti na prvý riadok tr
-        tr.seek(0)
         for idx, trLine in enumerate(reader_tr):
             if idx == 0:
                 continue
-            tripsTrip_id[(trLine[2])] = Trip(trLine[0],trLine[2],trLine[3])
+            temporaryObjectTR = Trip(trLine[0],trLine[2],trLine[3])
+            if trLine[0] in tripsRoute_id:
+                tripsRoute_id[(stLine[3])].append(temporaryObjectTR)
+            else:
+                tripsRoute_id[(stLine[3])] = [temporaryObjectTR]
+            # tripsTrip_id
+            tripsTrip_id[(trLine[2])] = temporaryObjectTR
 
         routes = {}
         for idx, rtLine in enumerate(reader_rt):

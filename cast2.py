@@ -1,5 +1,3 @@
-from cast1 import *
-
 def __deleteUnreferenced(stopTimesDict : dict) -> dict:
     """Deletes all StopTime objects unconnected to all other classes. If list 
     containing StopTime objects is empty, deletes its key from input dictionary.\n
@@ -60,6 +58,6 @@ def referenceObjects(stops : dict, stopTimesS : dict, stopTimesT : dict, tripsR 
         else:       # if Trip objects to reference to exist:
             for trip in trips:
                 trip.refToRoute = route       
-                route.refToTrips.append(stopTime)
+                route.refToTrips.append(trip)
 
-    return __deleteUnreferenced(stopTimesS)
+    return __deleteUnreferenced(stopTimesT)

@@ -95,8 +95,8 @@ def __deleteUnreferenced(stopTimesDict : dict) -> dict:
     for (key, stopTimes) in stopTimesDict.items():      # iterates through each list of StopTime objects
         validObjects = []       # list to replace the old one
         for stopTime in stopTimes:      
-            if (isinstance(stopTime.refToStop, Stop)) and (isinstance(stopTime.refToTrip, Trip))\
-            and (isinstance(stopTime.refToTrip, Trip) and isinstance(stopTime.refToTrip.refToRoute, Route)):        # if it´s connected to all other classes    
+            if (isinstance(stopTime.refToStop, Stop)) and (isinstance(stopTime.refToTrip, Trip)\
+            and isinstance(stopTime.refToTrip.refToRoute, Route)):        # if it´s connected to all other classes    
                 validObjects.append(stopTime)
 
         if validObjects == []:      # record contains 0 StopTime objects connected to all other classes
@@ -145,9 +145,9 @@ def referenceObjects(stops : dict, stopTimesS : dict, stopTimesT : dict, tripsR 
         else:       # if Trip objects to reference to exist:
             for trip in trips:
                 trip.refToRoute = route       
-                route.refToTrips.append(stopTime)
+                route.refToTrips.append(trip)
 
-    return __deleteUnreferenced(stopTimesS)
+    return __deleteUnreferenced(stopTimesT)
 
 def merge_sort(array : list) -> list:
     '''
@@ -220,7 +220,7 @@ def busiest(stopSegments, date) -> None:
     for item in stopSegments.values():
         array.append(item)
     sort_Segments(array)
-    table = PrettyTable(['Start', 'Finnish', 'Number of trips', 'Routes'])
+    table = PrettyTable(['Start', 'Finish', 'Number of trips', 'Routes'])
     for item in array[:5]:
         table.add_row([item.start, item.finnish, item.counter, ''])
         routes=[]
@@ -238,14 +238,14 @@ def busiest(stopSegments, date) -> None:
             table.add_row(['', '', '', route])
     print(table)
     
-def create_StopSegments(stopTimes) -> None:
+def create_StopSegments(stopTimesS) -> None:
     '''
         method for creating objects of class StopSegment
         
         Parameters:
         ----------
         stopTimes:
-            dictionary  key:    trip_id of related trip
+            dictionary  key:    stop_id of related trip
                         value:  array of object class StopTime
 
         Return value:
@@ -255,33 +255,33 @@ def create_StopSegments(stopTimes) -> None:
                         value:  object of class StopSegment
     '''
     stopSegments = {}
-    current_trip_id = None
     start = None
     finish = None
     start_id = None
     finish_id = None
-    for (key, stopTime) in stopTimes.items():
-        for item in stopTime:
-            if current_trip_id != key:
-                current_trip_id = key
-                start = item.refToStop.name
-                start_id = item.refToStop.id
+    print(len(stopTimesS.values()))
+    counter = 0
+    for stopTime in stopTimesS.values():
+        counter += len(stopTime)
+        start = stopTime[0].refToStop.name
+        start_id = stopTime[0].refToStop.id
+        for item in stopTime[1:]:
+            finish = item.refToStop.name
+            finish_id = item.refToStop.id
+
+            Segment = stopSegments.get(start_id + finish_id)
+            if not Segment:
+                stopSegments[start_id + finish_id] = StopSegment(start, finish)
+                stopSegments[start_id + finish_id].trips.append(item.refToTrip)
             else:
-                finish = item.refToStop.name
-                finish_id = item.refToStop.id
-                Segment = stopSegments.get(start_id + finish_id)
-                if not Segment:
-                    stopSegments[start_id + finish_id] = StopSegment(start, finish)
-                    stopSegments[start_id + finish_id].trips.append(item.refToTrip)
-                else:
-                    Segment.counter += 1
-                    Segment.trips.append(item.refToTrip)
-                start = item.refToStop.name
-                start_id = item.refToStop.id
-            current_trip_id = key
+                Segment.counter += 1
+                Segment.trips.append(item.refToTrip)
+            start = finish
+            start_id = finish_id
+    print(counter)
     return stopSegments
 
-
+"""
 if (not exists('gtfs')) or (not isdir('gtfs')):     # ve složce není nic s názvem 'PID_GTFS' nebo to není složka
     r = get('http://data.pid.cz/PID_GTFS.zip')      # získání dat
     
@@ -292,10 +292,10 @@ if (not exists('gtfs')) or (not isdir('gtfs')):     # ve složce není nic s ná
         files = ('stops', 'stop_times', 'trips', 'routes', 'calendar', 'calendar_dates')
         for file in files:
             myZip.extract(f'{file}.txt', 'gtfs')        # extrakce dat do /gtfs
-
+"""
 # funkcia potrebuje ako argumenty názvy súborov, alebo ich napíšte priamo do "with" 
-stops, stopTimesStop_id, stopTimesTrip_id, tripsRoute_id, tripsTrip_id, routes = createObjects("gtfs\\stops.txt", "gtfs\\stop_times.txt",
-                                                                                                "gtfs\\trips.txt", "gtfs\\routes.txt")
+stops, stopTimesStop_id, stopTimesTrip_id, tripsRoute_id, tripsTrip_id, routes = createObjects("Test\\stops.txt", "Test\\stop_times.txt",
+                                                                                                "Test\\trips.txt", "Test\\routes.txt")
 stopTimes = referenceObjects(stops, stopTimesStop_id, stopTimesTrip_id, tripsRoute_id, tripsTrip_id, routes)
 # príklad, ako získať objekt
 stopSegments = create_StopSegments(stopTimes)

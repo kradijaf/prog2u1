@@ -9,9 +9,7 @@ from StopSegment import StopSegment
 from Stop import Stop
 from math import floor
 from prettytable import PrettyTable
-from datetime import date
 
-# open files, create dictionaries of objects
 def createObjects(stopsFile,stopTimesFile,tripsFile,routesFile) -> tuple[dict, dict, dict, dict, dict, dict]: # docstringy a open upraviť
     """Creates 4 dictionaries: 1. stops, 2. stopTimesStop_id, 3. stopTimesTrip_id, 4. tripsRoute_id, 5. tripsTrip_id, 6. routes:
     
@@ -185,7 +183,7 @@ def merge_sort(array : list) -> list:
         return sorted_array
     return array 
     
-def busiest(stopSegments, date) -> None:
+def busiest(stopSegments) -> None:
     '''
         calculating and printing five busiest stopSegments
         
@@ -210,11 +208,6 @@ def busiest(stopSegments, date) -> None:
         table.add_row([item.start, item.finnish, item.counter, ''])
         routes=[]
         for trip in item.trips:
-            """
-            in arguments must be date, object of class Calendar 
-            if trip.is_available(date):
-                routes.append(trip.reftoRoute.name)
-            """
             routes.append(trip.refToRoute.name)
         set_routes = set(routes)
         routes = list(set_routes)
@@ -279,5 +272,4 @@ stops, stopTimesStop_id, stopTimesTrip_id, tripsRoute_id, tripsTrip_id, routes =
                                                                                                 "gtfs\\trips.txt", "gtfs\\routes.txt")
 stopTimes = referenceObjects(stops, stopTimesStop_id, stopTimesTrip_id, tripsRoute_id, tripsTrip_id, routes)
 stopSegments = create_StopSegments(stopTimes)
-datum = date(2023,3,22)
-busiest(stopSegments, datum)
+busiest(stopSegments)

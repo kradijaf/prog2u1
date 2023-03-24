@@ -1,5 +1,3 @@
-from datetime import date
-
 class Trip():
     
     def __init__(self, trip_id, route_id, trip_headsign):
@@ -35,23 +33,3 @@ class Trip():
     @refToRoute.setter
     def refToRoute(self, refToRoute):
         self.__refToRoute = refToRoute
-    """
-    # Method assumed that object Trip contains atribute self.calendar which stored array with object of class Calendar
-    def is_available(self, date : date) -> bool:
-        for calendar in self.calendar:
-            available = False
-            if calendar.days[date.weekday()]:
-                available = True
-            if date > calendar.start_date and date < calendar.end_date:
-                available = True
-            else:
-                available = False
-            for exception in calendar.exception: # calendar_date
-                if exception.date == date and exception.exception_type == 1:
-                        available = True
-                if exception.date == date and exception.exception_type == 2:
-                        return False
-            if available:
-                return True
-        return False
-    """

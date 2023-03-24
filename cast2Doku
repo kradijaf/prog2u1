@@ -1,0 +1,12 @@
+## **Vývojářská dokumentace**
+
+Funkce `referenceObjects()` propojuje objekty `Stop`, `StopTime`, `Trip`, a `Route`. Do atributu `refTo<objekt(y)>` vkládá příslušný počet objektů se stejnou hodnotou identifikátoru, skrz který jsou provázat. Veškeré vstupní slovníky jsou indexované podle jednoho identifikátoru. Funkce tedy pro každou kombinaci slovníků `stops–stopTimesStop_id`, `tripsTrip_id–stopTimesTrip_id` a `routes–tripsRoute_id` iteruje skrz první slovník a pro každý objekt v něm hledá v druhém slovníku klíč se stejným identifikátorem, případně všechny objekty daného klíče propojuje s objektem v prvním klíči.
+
+Následně předává podfunkci `__deleteUnreferenced()` slovník seznamů objektů StopTime indexovaný podle trip_id (`stopTimesTrip_id`). Funkce vrací vstupní slovník obsahující pouze objekty StopTime, ze kterých se lze dostat do ostatních 3 objektů. Funkce tedy iterováním skrz veškeré objekty každého klíče v něm kontroluje, zda:
+- je v atributu refToStop objekt Stop
+- je v atributu refToTrip objekt Trip
+- je v atributu refToTrip.refToRoute objekt Route
+
+Každý objekt, který nesplňuje všechny podmínky, je smazán, pokud pro daný klíč neexistuje objekt StopTime se správnými referencemi, po dokončení cyklu je klíč odstaněn z slovníku.
+
+Výstup této funkce je i výstupem funkce `referenceObjects()`.

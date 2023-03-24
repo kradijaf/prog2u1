@@ -9,9 +9,7 @@ from StopSegment import StopSegment
 from Stop import Stop
 from math import floor
 from prettytable import PrettyTable
-from datetime import date
 
-# open files, create dictionaries of objects
 def createObjects(stopsFile,stopTimesFile,tripsFile,routesFile) -> tuple[dict, dict, dict, dict, dict, dict]: # docstringy a open upraviť
     """Creates 4 dictionaries: 1. stops, 2. stopTimesStop_id, 3. stopTimesTrip_id, 4. tripsRoute_id, 5. tripsTrip_id, 6. routes:
     
@@ -184,23 +182,8 @@ def merge_sort(array : list) -> list:
             idx_2 += 1
         return sorted_array
     return array 
-
-def sort_Segments(stopSegments) -> None:
-    '''
-        method for calling method merge soft
-        
-        Parameters:
-        -----------
-        stopSegments:
-            array of object (class StopSegment) to sort
-
-        Return value:
-        -------------
-        sorted array
-        '''
-    return merge_sort(stopSegments)
     
-def busiest(stopSegments, date) -> None:
+def busiest(stopSegments) -> None:
     '''
         calculating and printing five busiest stopSegments
         
@@ -219,17 +202,12 @@ def busiest(stopSegments, date) -> None:
     array = []
     for item in stopSegments.values():
         array.append(item)
-    sort_Segments(array)
+    merge_sort(array)
     table = PrettyTable(['Start', 'Finish', 'Number of trips', 'Routes'])
-    for item in array[:5]:
+    for item in array[:min(5, len(array))]:
         table.add_row([item.start, item.finnish, item.counter, ''])
         routes=[]
         for trip in item.trips:
-            """
-            in arguments must be date, object of class Calendar 
-            if trip.is_available(date):
-                routes.append(trip.reftoRoute.name)
-            """
             routes.append(trip.refToRoute.name)
         set_routes = set(routes)
         routes = list(set_routes)
@@ -238,7 +216,7 @@ def busiest(stopSegments, date) -> None:
             table.add_row(['', '', '', route])
     print(table)
     
-def create_StopSegments(stopTimesS) -> None:
+def create_StopSegments(stopTimesT) -> None:
     '''
         method for creating objects of class StopSegment
         
@@ -259,10 +237,8 @@ def create_StopSegments(stopTimesS) -> None:
     finish = None
     start_id = None
     finish_id = None
-    print(len(stopTimesS.values()))
-    counter = 0
-    for stopTime in stopTimesS.values():
-        counter += len(stopTime)
+    for stopTime in stopTimesT.values():
+
         start = stopTime[0].refToStop.name
         start_id = stopTime[0].refToStop.id
         for item in stopTime[1:]:
@@ -278,10 +254,8 @@ def create_StopSegments(stopTimesS) -> None:
                 Segment.trips.append(item.refToTrip)
             start = finish
             start_id = finish_id
-    print(counter)
     return stopSegments
 
-"""
 if (not exists('gtfs')) or (not isdir('gtfs')):     # ve složce není nic s názvem 'PID_GTFS' nebo to není složka
     r = get('http://data.pid.cz/PID_GTFS.zip')      # získání dat
     
@@ -292,12 +266,10 @@ if (not exists('gtfs')) or (not isdir('gtfs')):     # ve složce není nic s ná
         files = ('stops', 'stop_times', 'trips', 'routes', 'calendar', 'calendar_dates')
         for file in files:
             myZip.extract(f'{file}.txt', 'gtfs')        # extrakce dat do /gtfs
-"""
+
 # funkcia potrebuje ako argumenty názvy súborov, alebo ich napíšte priamo do "with" 
-stops, stopTimesStop_id, stopTimesTrip_id, tripsRoute_id, tripsTrip_id, routes = createObjects("Test\\stops.txt", "Test\\stop_times.txt",
-                                                                                                "Test\\trips.txt", "Test\\routes.txt")
+stops, stopTimesStop_id, stopTimesTrip_id, tripsRoute_id, tripsTrip_id, routes = createObjects("gtfs\\stops.txt", "gtfs\\stop_times.txt",
+                                                                                                "gtfs\\trips.txt", "gtfs\\routes.txt")
 stopTimes = referenceObjects(stops, stopTimesStop_id, stopTimesTrip_id, tripsRoute_id, tripsTrip_id, routes)
-# príklad, ako získať objekt
 stopSegments = create_StopSegments(stopTimes)
-datum = date(2023,3,22)
-busiest(stopSegments, datum)
+busiest(stopSegments)

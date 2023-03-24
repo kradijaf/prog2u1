@@ -36,9 +36,6 @@ def createObjects(stopsFile : str, stopTimesFile : str, tripsFile : str, routesF
     except PermissionError as err:
         print('Reading from the file is not permitted: ' + str(err))
         quit()
-    except NotImplementedError as err:
-        print(str(err))
-        quit()
     except Exception as err:
         print('Unexpected error: ' + str(err))
         quit()

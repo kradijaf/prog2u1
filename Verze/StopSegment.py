@@ -45,6 +45,9 @@ class StopSegment:
     def trips(self):
         return self.__trips
     
+    def __str__(self) -> str:
+        return str(self.counter)
+    
     def __add_trip(self, trip) -> None:
         '''
         adding related trip to array of trips

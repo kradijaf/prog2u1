@@ -7,7 +7,7 @@ class StopSegment:
     ---------
     start:
         name of the staring stop
-    finnish :
+    finish :
         name of the ending stop 
     counter :
         number of related trips
@@ -19,9 +19,9 @@ class StopSegment:
     __add_trip(trip):
         adding object od related trip to the array self.__trips
     '''
-    def __init__(self, start, finnish) -> None:
+    def __init__(self, start, finish) -> None:
         self.__start = start
-        self.__finnish = finnish
+        self.__finish = finish
         self.__counter = 1
         self.__trips = []
     
@@ -30,8 +30,8 @@ class StopSegment:
         return self.__start
 
     @property
-    def finnish(self):
-        return self.__finnish
+    def finish(self):
+        return self.__finish
     
     @property
     def counter(self):

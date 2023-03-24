@@ -205,7 +205,7 @@ def busiest(stopSegments) -> None:
     merge_sort(array)
     table = PrettyTable(['Start', 'Finish', 'Number of trips', 'Routes'])
     for item in array[:min(5, len(array))]:
-        table.add_row([item.start, item.finnish, item.counter, ''])
+        table.add_row([item.start, item.finish, item.counter, ''])
         routes=[]
         for trip in item.trips:
             routes.append(trip.refToRoute.name)

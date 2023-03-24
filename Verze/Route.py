@@ -1,5 +1,6 @@
 class Route():
 
+    # initialization variables
     def __init__(self, route_id, route_short_name, route_long_name):
         self.__route_id = route_id
         self.__refToTrips = []
@@ -9,6 +10,7 @@ class Route():
     def __str__(self):
         return 'route_id: ' + self.__route_id + ', refToTrips: ' + self.__refToTrips + ', name: ' + self.__name + ', routeLongName: ' + str(self.__routeLongName)
     
+    # necessary getters and setters
     @property
     def route_id(self):
         return self.__route_id

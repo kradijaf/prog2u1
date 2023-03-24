@@ -8,7 +8,7 @@ def __deleteUnreferenced(stopTimesDict : dict) -> dict:
         validObjects = []       # list to replace the old one
         for stopTime in stopTimes:      
             if (isinstance(stopTime.refToStop, Stop)) and (isinstance(stopTime.refToTrip, Trip))\
-            and (isinstance(stopTime.refToTrip, Trip) and isinstance(stopTime.refToTrip.refToRoute, Route)):        # if it´s connected to all other classes    
+            and isinstance(stopTime.refToTrip.refToRoute, Route):        # if it´s connected to all other classes    
                 validObjects.append(stopTime)
 
         if validObjects == []:      # record contains 0 StopTime objects connected to all other classes

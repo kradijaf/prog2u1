@@ -1,5 +1,6 @@
 class Stop():
     
+    # initialization variables
     def __init__(self, stop_id, stop_name, stop_lat, stop_lon):
         self.__id = stop_id
         self.__name = stop_name
@@ -11,6 +12,7 @@ class Stop():
         return 'id: ' + str(self.__id) + ', name: ' + str(self.__name) + ', stopLat: ' + str(self.__stopLat) \
                 + ', stopLon: ' + str(self.__stopLon) + ', refToSTs: ' + str(self.__refToSTs)
     
+    # necessary getters and setters
     @property
     def id(self):
         return self.__id

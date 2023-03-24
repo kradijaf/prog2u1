@@ -1,14 +1,24 @@
-from os.path import exists, isdir       # import pouze potřebného
-from requests import get
-from zipfile import ZipFile
+try:
+    from os.path import exists, isdir       # importing only the necesarry stuff
+    from requests import get
+    from zipfile import ZipFile
 
-if (not exists('gtfs')) or (not isdir('gtfs')):     # ve složce není nic s názvem 'PID_GTFS' nebo to není složka
-    r = get('http://data.pid.cz/PID_GTFS.zip')      # získání dat
-    
-    with open('PID_GTFS.zip', 'wb') as saveTo:      # uložení dat
-        saveTo.write(r.content)
+    if (not exists('gtfs')) or (not isdir('gtfs')):     # nothing in own folder is named 'gtfs' or it´s not a folder
+        r = get('http://data.pid.cz/PID_GTFS.zip')      # accessing the data
+        
+        with open('PID_GTFS.zip', 'wb') as saveTo:      # saving the data
+            saveTo.write(r.content)
 
-    with ZipFile('PID_GTFS.zip', 'r') as myZip:     # přístup k ZIP souboru
-        files = ('stops', 'stop_times', 'trips', 'routes', 'calendar', 'calendar_dates')
-        for file in files:
-            myZip.extract(f'{file}.txt', 'gtfs')        # extrakce dat do /gtfs
+        with ZipFile('PID_GTFS.zip', 'r') as myZip:     # access to ZIP file
+            files = ('stops', 'stop_times', 'trips', 'routes', 'calendar', 'calendar_dates')
+            for file in files:
+                myZip.extract(f'{file}.txt', 'gtfs')        # extraction of the data into /gtfs
+
+except ImportError as e:
+    raise SystemExit(f'Couldn´t import module: {e.name}. Check if it´s installed.')
+except PermissionError:
+    raise SystemExit('Can´t write into this folder.')
+except OSError as e:
+    raise SystemExit(f'OS Error: {e}.')
+except Exception as e:
+    raise SystemExit(f'Unexpected error: {e}.')

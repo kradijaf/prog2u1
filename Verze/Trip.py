@@ -1,5 +1,6 @@
 class Trip():
     
+    # initialization variables
     def __init__(self, trip_id, route_id, trip_headsign):
         self.__trip_id = trip_id
         self.__refToSTs = []
@@ -10,6 +11,7 @@ class Trip():
     def __str__(self):
         return 'trip_id: ' + self.__trip_id + ', refToRoute: ' + self.__refToRoute + ', refToSTs: ' + self.__refToSTs + ', tripHeadSign: ' + str(self.__tripHeadsign)
 
+    # necessary getters and setters
     @property
     def trip_id(self):
         return self.__trip_id

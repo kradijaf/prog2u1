@@ -238,7 +238,7 @@ def busiest(stopSegments, date) -> None:
         array.append(item)
     sort_Segments(array)
     table = PrettyTable(['Start', 'Finish', 'Number of trips', 'Routes'])
-    for item in array[:5]:
+    for item in array[:min(5, len(array))]:
         table.add_row([item.start, item.finnish, item.counter, ''])
         routes=[]
         for trip in item.trips:

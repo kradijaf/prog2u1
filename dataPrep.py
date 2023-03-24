@@ -13,10 +13,12 @@ try:
             files = ('stops', 'stop_times', 'trips', 'routes', 'calendar', 'calendar_dates')
             for file in files:
                 myZip.extract(f'{file}.txt', 'gtfs')        # extraction of the data into /gtfs
-                
+
 except ImportError as e:
     raise SystemExit(f'Couldn´t import module: {e.name}. Check if it´s installed.')
 except PermissionError:
-    raise SystemExit(r'Can´t write into this folder or into \gtfs.')
+    raise SystemExit('Can´t write into this folder.')
 except OSError as e:
     raise SystemExit(f'OS Error: {e}.')
+except Exception as e:
+    raise SystemExit(f'Unexpected error: {e}.')

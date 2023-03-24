@@ -1,5 +1,6 @@
 class StopTime():
 
+    # initialization variables
     def __init__(self, trip_id, arrival_time, departure_time, stop_id):
         self.__refToStop = stop_id
         self.__refToTrip = trip_id
@@ -10,6 +11,7 @@ class StopTime():
         return 'refToStop: ' + self.__refToStop + ', refToTrip: ' + self.__refToTrip + ', arrivalTime: ' \
                 + str(self.__arrivalTime) + ', departureTime: ' + str(self.__departureTime)
     
+    # necessary getters and setters
     @property
     def refToStop(self):
         return self.__refToStop

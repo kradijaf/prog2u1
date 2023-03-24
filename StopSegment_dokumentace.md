@@ -1,4 +1,6 @@
 # Třída StopSegment
+__Popis__
+Třída simuluje mezizastávkový úsek, úsek mezi dvěma po sobě následujícími zastávkami<br/>
 __Datové položky:__
 >>start - název počáteční stanice<br/>
 >>finish - název konečné stanice<br/>

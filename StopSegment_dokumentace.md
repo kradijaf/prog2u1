@@ -1,2 +1,3 @@
 # Třída StopSegment
-<br>Datové položky<br\>
+__Datové položky:__
+>dcecfef

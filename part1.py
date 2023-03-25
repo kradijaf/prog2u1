@@ -207,7 +207,7 @@ class Route():
         self.__refToTrips = refToTrips
 
 # open files, create dictionaries of objects
-def createObjects(stopsFile,stopTimesFile,tripsFile,routesFile) -> tuple[dict, dict, dict, dict, dict, dict]: # docstringy a open upraviť
+def createObjects(stopsFile : str,stopTimesFile : str,tripsFile : str,routesFile : str) -> tuple[dict, dict, dict, dict, dict, dict]: # docstringy a open upraviť
     """Creates 6 dictionaries: 1. stops, 2. stopTimesStop_id, 3. stopTimesTrip_id, 4. tripsRoute_id, 5. tripsTrip_id, 6. routes:
     
     1. key: stop_id; value: class Stops object with atributes: id, name, stopLat, stopLon, refToSTs \n 
@@ -276,6 +276,7 @@ def createObjects(stopsFile,stopTimesFile,tripsFile,routesFile) -> tuple[dict, d
         open(stopTimesFile, encoding = "utf-8", newline = "") as st, \
         open(tripsFile, encoding = "utf-8", newline = "") as tr, \
         open(routesFile, encoding = "utf-8", newline = "") as rt:
+
         reader_sp = csv.DictReader(sp, delimiter=",")
         reader_st = csv.DictReader(st, delimiter=",")
         reader_tr = csv.DictReader(tr, delimiter=",")
@@ -312,10 +313,9 @@ def createObjects(stopsFile,stopTimesFile,tripsFile,routesFile) -> tuple[dict, d
         for trLine in reader_tr:
             # create new object from the data on the current line in trips.txt
             temporaryObjectTR = Trip(trLine['trip_id'],trLine['route_id'],trLine['trip_headsign'])
-            # if the key already exists, append the object to the list in values
+            # the same procedure as before
             if trLine['route_id'] in tripsRoute_id:
-                tripsRoute_id[(trLine['route_id'])].append(temporaryObjectTR)
-            # else add a new key with an object inside a list 
+                tripsRoute_id[(trLine['route_id'])].append(temporaryObjectTR) 
             else:
                 tripsRoute_id[(trLine['route_id'])] = [temporaryObjectTR]
             # trip_id is unique for every line in trips.txt, value of every key is only one object
@@ -331,5 +331,6 @@ def createObjects(stopsFile,stopTimesFile,tripsFile,routesFile) -> tuple[dict, d
 
 # funkcia potrebuje ako argumenty názvy súborov, alebo ich napíšte priamo do "with" časti
 stops, stopTimesStop_id, stopTimesTrip_id, tripsRoute_id, tripsTrip_id, routes = createObjects('stops.txt','stop_times.txt','trips.txt','routes.txt')
+print(type(createObjects('stops.txt','stop_times.txt','trips.txt','routes.txt')))
 # príklad, ako získať objekt
 print((stopTimesStop_id['U953Z102P'][0]))

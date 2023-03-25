@@ -199,7 +199,7 @@ def merge_sort(array : list) -> list:
             idx_2 += 1
         return sorted_array
     return array 
-    
+
 def busiest(stopSegments) -> None:
     '''
         calculating and printing five busiest stopSegments
@@ -231,6 +231,8 @@ def busiest(stopSegments) -> None:
         routes = sorted(routes)
         for route in routes:
             table.add_row(['', '', '', route])
+    if len(array) < 5:
+        print(f"Nelze vypsat 5 nejfrekventovanějších mezizastávkových úseků. Nalezeno bylo pouze {len(array)} úseků.")
     print(table)
     
 def create_StopSegments(stopTimesT) -> None:

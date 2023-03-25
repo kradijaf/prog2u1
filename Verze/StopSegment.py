@@ -6,7 +6,7 @@ class StopSegment:
     Atributes:
     ---------
     start:
-        name of the staring stop
+        name of the starting stop
     finish :
         name of the ending stop 
     counter :

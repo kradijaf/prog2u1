@@ -1,5 +1,6 @@
+# import only what is necesarry
 try:
-    from os.path import exists, isdir       # importing only the necesarry stuff
+    from os.path import exists, isdir
     from requests import get
     from zipfile import ZipFile
     from csv import DictReader
@@ -12,17 +13,17 @@ try:
     from math import floor
     from prettytable import PrettyTable
 except ImportError as e:
-    raise SystemExit(f'Couldn´t import module: {e.name}. Check if it´s installed.')
+    raise SystemExit(f'Could not import module: {e.name}. Check if it is installed.')
 
 def dataPrep():
-    if (not exists('gtfs')) or (not isdir('gtfs')):     # nothing in own folder is named 'gtfs' or it´s not a folder
+    if (not exists('gtfs')) or (not isdir('gtfs')):     # nothing in own folder is named 'gtfs' or it is not a folder
         r = get('http://data.pid.cz/PID_GTFS.zip')      # accessing the data
         
         with open('PID_GTFS.zip', 'wb') as saveTo:      # saving the data
             saveTo.write(r.content)
 
         with ZipFile('PID_GTFS.zip', 'r') as myZip:     # access to ZIP file
-            files = ('stops', 'stop_times', 'trips', 'routes', 'calendar', 'calendar_dates')
+            files = ('stops', 'stop_times', 'trips', 'routes')
             for file in files:
                 myZip.extract(f'{file}.txt', 'gtfs')        # extraction of the data into /gtfs
 
@@ -83,11 +84,9 @@ def createObjects(stopsFile : str, stopTimesFile : str, tripsFile : str, routesF
                     quit()
 
     except FileNotFoundError as err:
-        print('File not found: ' + str(err))
-        quit()
+        raise SystemExit(f'File not found: {err}.')
     except PermissionError as err:
-        print('Reading from the file is not permitted: ' + str(err))
-        quit()
+        raise SystemExit(f'Reading from the file is not permitted: {err}.')
 
   
     # open the files a store the data as readers
@@ -169,19 +168,19 @@ def __deleteUnreferenced(stopTimesDict : dict) -> dict:
     for key in toPop:       # deleting of invalid records in input dictionary
         stopTimesDict.pop(key)
     if not stopTimesDict:
-        raise SystemExit('StopTime objects from which Stop, Trip and Route can be accesed don´t exist. Further calculations can´t be done.')
+        raise SystemExit('StopTime objects from which Stop, Trip and Route can be accesed do not exist. Further calculations cannot be done.')
     
     return stopTimesDict
 
 def referenceObjects(stops : dict, stopTimesS : dict, stopTimesT : dict, tripsR : dict, tripsT : dict, routes : dict) -> tuple[dict, dict, dict, dict, dict, dict]:
     """Creates two-way references between Stop, StopTime, Trip and Route objects.\n
-    Creates direct references between these classes:\n
+    Creates direct references between objects of these classes:\n
         Stop - StopTime (via stop_id)\n
         StopTime - Trip (via trip_id)\n
         Trip - Route (via route_id).\n
     
-    Deletes each StopTime object which couldn´t be connected to each of remaining 3 classes (Stop, Trip, Route).\n
-    Returns dictionary only containing StopTime objects connected to all remaining classes."""
+    Deletes each StopTime object which could not be connected to each of remaining 3 classes (Stop, Trip, Route).\n
+    Returns dictionary containing only StopTime objects connected to all remaining classes."""
     for (key, stop) in stops.items():       # connection of Stop and StopTime objects
         try:
             stopTimes = stopTimesS[key]     # all stopTime objects with stop_id equal to key
@@ -282,7 +281,7 @@ def busiest(stopSegments) -> None:
         for route in routes:
             table.add_row(['', '', '', route])
     if len(array) < 5:
-        print(f"Cannot be listed 5 the busiest sections. Only {len(array)} sections were found.")
+        print(f"Cannot list 5 busiest sections. Only {len(array)} sections were found.")
     print(table)
     
 def create_StopSegments(stopTimesT) -> None:
@@ -327,17 +326,17 @@ def create_StopSegments(stopTimesT) -> None:
             start_id = finish_id
     return stopSegments
 try:
-    # preparation of the data if they don´t exist
+    # preparation of the data if they do not exist
     dataPrep()
-    # funkcia potrebuje ako argumenty názvy súborov, alebo ich napíšte priamo do "with" 
+
     stops, stopTimesStop_id, stopTimesTrip_id, tripsRoute_id, tripsTrip_id, routes = createObjects("gtfs\\stops.txt", "gtfs\\stop_times.txt",
                                                                                                     "gtfs\\trips.txt", "gtfs\\routes.txt")
     stopTimes = referenceObjects(stops, stopTimesStop_id, stopTimesTrip_id, tripsRoute_id, tripsTrip_id, routes)
-    # príklad, ako získať objekt
+
     stopSegments = create_StopSegments(stopTimes)
     busiest(stopSegments)
 except PermissionError:
-    raise SystemExit('Can´t write into this folder.')
+    raise SystemExit('Can not write into this folder.')
 except OSError as e:
     raise SystemExit(f'OS Error: {e}.')
 except Exception as e:

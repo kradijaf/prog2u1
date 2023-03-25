@@ -1,4 +1,18 @@
 class StopTime():
+    '''
+    Class respesenting Stop Times
+    
+    Object Attributes:
+    ---------
+    refToTrip :
+        trip id of the stop time
+    arrivalTime :
+        arrival time of the stop time
+    departureTime :
+        departure time of the stop time
+    refToStop :
+        stop id of the stop time
+    '''
 
     # initialization variables
     def __init__(self, trip_id, arrival_time, departure_time, stop_id):

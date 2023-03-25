@@ -1,4 +1,18 @@
 class Route():
+    '''
+    Class respesenting Routes
+    
+    Object Attributes:
+    ---------
+    route_id :
+        id of the route
+    name :
+        short name of the route
+    routeLongName :
+        long name of the route 
+    refToTrips :
+        reference to trips (empty list, will be modified later)
+    '''
 
     # initialization variables
     def __init__(self, route_id, route_short_name, route_long_name):

@@ -1,4 +1,18 @@
 class Trip():
+    '''
+    Class respesenting Trips
+    
+    Object Attributes:
+    ---------
+    trip_id :
+        trip id of the trip
+    refToRoute :
+        route id of the trip
+    tripHeadsign :
+        headsign of the trip 
+    refToSTs :
+        reference to stop times (empty list, will be modified later)
+    '''
     
     # initialization variables
     def __init__(self, trip_id, route_id, trip_headsign):

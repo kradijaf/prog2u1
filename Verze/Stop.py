@@ -1,4 +1,20 @@
 class Stop():
+    '''
+    Class respesenting Stops
+    
+    Object Attributes:
+    ---------
+    id :
+        id of the stop
+    name :
+        name of the stop 
+    stopLat :
+        lattitude of the stop
+    stopLon :
+        longitude of the stop
+    refToSTs :
+        reference to stop times (empty list, will be modified later)
+    '''
     
     # initialization variables
     def __init__(self, stop_id, stop_name, stop_lat, stop_lon):

@@ -4,7 +4,7 @@ Program kvůli své jednoduchosti není členěn do funkcí. Ve své složce kon
 - zda existuje soubor pojmenovaný `gtfs`
 - zda je složkou
 
-Pokud alespoň jedna podmínka není splněna, z webu http://data.pid.cz/PID_GTFS.zip ukládá do své složky data jako `PID_GTFS.zip`. Z tohoto souboru následně extrahuje soubory `stops.txt`, `stop_times.txt`, `trips.txt`, `routes.txt`, `calendar.txt` a `calendar_dates.txt` do složky `\gtfs`, tu vytváří ve své složce.
+Pokud alespoň jedna podmínka není splněna, z webu http://data.pid.cz/PID_GTFS.zip ukládá do své složky data jako `PID_GTFS.zip`. Z tohoto souboru následně extrahuje soubory `stops.txt`, `stop_times.txt`, `trips.txt`, `routes.txt` do složky `\gtfs`, tu vytváří ve své složce.
 
 > Program kontroluje možnost pracovat/zapisovat ve své složce a nainstalované moduly `os`, `requests` a `zipfile`, případně dojde k ukončení.
 

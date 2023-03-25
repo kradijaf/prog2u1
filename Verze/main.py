@@ -199,21 +199,6 @@ def merge_sort(array : list) -> list:
             idx_2 += 1
         return sorted_array
     return array 
-
-def sort_Segments(stopSegments) -> None:
-    '''
-        method for calling method merge soft
-        
-        Parameters:
-        -----------
-        stopSegments:
-            array of object (class StopSegment) to sort
-
-        Return value:
-        -------------
-        sorted array
-        '''
-    return merge_sort(stopSegments)
     
 def busiest(stopSegments) -> None:
     '''
@@ -234,7 +219,7 @@ def busiest(stopSegments) -> None:
     array = []
     for item in stopSegments.values():
         array.append(item)
-    sort_Segments(array)
+    merge_sort(array)
     table = PrettyTable(['Start', 'Finish', 'Number of trips', 'Routes'])
     for item in array[:min(5, len(array))]:
         table.add_row([item.start, item.finish, item.counter, ''])

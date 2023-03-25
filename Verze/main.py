@@ -301,6 +301,9 @@ def create_StopSegments(stopTimesT) -> None:
             dictionary  key:    stop_id of starting station + stop_id of terminating station
                         value:  object of class StopSegment
     '''
+    if not stopTimesT:
+        print("Cannot be created any sections.")
+        quit()
     stopSegments = {}
     start = None
     finish = None

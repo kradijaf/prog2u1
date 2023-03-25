@@ -1,14 +1,29 @@
-from os.path import exists, isdir       # import pouze potřebného
-from requests import get
-from zipfile import ZipFile
-from csv import reader
-from Route import Route
-from Trip import Trip
-from StopTime import StopTime
-from StopSegment import StopSegment
-from Stop import Stop
-from math import floor
-from prettytable import PrettyTable
+try:
+    from os.path import exists, isdir       # importing only the necesarry stuff
+    from requests import get
+    from zipfile import ZipFile
+    from csv import reader
+    from Route import Route
+    from Trip import Trip
+    from StopTime import StopTime
+    from StopSegment import StopSegment
+    from Stop import Stop
+    from math import floor
+    from prettytable import PrettyTable
+except ImportError as e:
+    raise SystemExit(f'Couldn´t import module: {e.name}. Check if it´s installed.')
+
+def dataPrep():
+    if (not exists('gtfs')) or (not isdir('gtfs')):     # nothing in own folder is named 'gtfs' or it´s not a folder
+        r = get('http://data.pid.cz/PID_GTFS.zip')      # accessing the data
+        
+        with open('PID_GTFS.zip', 'wb') as saveTo:      # saving the data
+            saveTo.write(r.content)
+
+        with ZipFile('PID_GTFS.zip', 'r') as myZip:     # access to ZIP file
+            files = ('stops', 'stop_times', 'trips', 'routes', 'calendar', 'calendar_dates')
+            for file in files:
+                myZip.extract(f'{file}.txt', 'gtfs')        # extraction of the data into /gtfs
 
 def createObjects(stopsFile : str, stopTimesFile : str, tripsFile : str, routesFile : str) -> tuple[dict, dict, dict, dict, dict, dict]:
     """Creates 6 dictionaries: 1. stops, 2. stopTimesStop_id, 3. stopTimesTrip_id, 4. tripsRoute_id, 5. tripsTrip_id, 6. routes:
@@ -110,8 +125,8 @@ def __deleteUnreferenced(stopTimesDict : dict) -> dict:
     for (key, stopTimes) in stopTimesDict.items():      # iterates through each list of StopTime objects
         validObjects = []       # list to replace the old one
         for stopTime in stopTimes:      
-            if (isinstance(stopTime.refToStop, Stop)) and (isinstance(stopTime.refToTrip, Trip)\
-            and isinstance(stopTime.refToTrip.refToRoute, Route)):        # if it´s connected to all other classes    
+            if (isinstance(stopTime.refToStop, Stop)) and (isinstance(stopTime.refToTrip, Trip))\
+            and isinstance(stopTime.refToTrip.refToRoute, Route):        # if it´s connected to all other classes    
                 validObjects.append(stopTime)
 
         if validObjects == []:      # record contains 0 StopTime objects connected to all other classes
@@ -121,6 +136,9 @@ def __deleteUnreferenced(stopTimesDict : dict) -> dict:
 
     for key in toPop:       # deleting of invalid records in input dictionary
         stopTimesDict.pop(key)
+    if not stopTimesDict:
+        raise SystemExit('StopTime objects from which Stop, Trip and Route can be accesed don´t exist. Further calculations can´t be done.')
+    
     return stopTimesDict
 
 def referenceObjects(stops : dict, stopTimesS : dict, stopTimesT : dict, tripsR : dict, tripsT : dict, routes : dict) -> tuple[dict, dict, dict, dict, dict, dict]:
@@ -273,22 +291,19 @@ def create_StopSegments(stopTimesT) -> None:
             start = finish
             start_id = finish_id
     return stopSegments
-
-if (not exists('gtfs')) or (not isdir('gtfs')):     # ve složce není nic s názvem 'PID_GTFS' nebo to není složka
-    r = get('http://data.pid.cz/PID_GTFS.zip')      # získání dat
-    
-    with open('PID_GTFS.zip', 'wb') as saveTo:      # uložení dat
-        saveTo.write(r.content)
-
-    with ZipFile('PID_GTFS.zip', 'r') as myZip:     # přístup k ZIP souboru
-        files = ('stops', 'stop_times', 'trips', 'routes', 'calendar', 'calendar_dates')
-        for file in files:
-            myZip.extract(f'{file}.txt', 'gtfs')        # extrakce dat do /gtfs
-
-# funkcia potrebuje ako argumenty názvy súborov, alebo ich napíšte priamo do "with" 
-stops, stopTimesStop_id, stopTimesTrip_id, tripsRoute_id, tripsTrip_id, routes = createObjects("gtfs\\stops.txt", "gtfs\\stop_times.txt",
-                                                                                                "gtfs\\trips.txt", "gtfs\\routes.txt")
-stopTimes = referenceObjects(stops, stopTimesStop_id, stopTimesTrip_id, tripsRoute_id, tripsTrip_id, routes)
-# príklad, ako získať objekt
-stopSegments = create_StopSegments(stopTimes)
-busiest(stopSegments)
+try:
+    # preparation of the data if they don´t exist
+    dataPrep()
+    # funkcia potrebuje ako argumenty názvy súborov, alebo ich napíšte priamo do "with" 
+    stops, stopTimesStop_id, stopTimesTrip_id, tripsRoute_id, tripsTrip_id, routes = createObjects("gtfs\\stops.txt", "gtfs\\stop_times.txt",
+                                                                                                    "gtfs\\trips.txt", "gtfs\\routes.txt")
+    stopTimes = referenceObjects(stops, stopTimesStop_id, stopTimesTrip_id, tripsRoute_id, tripsTrip_id, routes)
+    # príklad, ako získať objekt
+    stopSegments = create_StopSegments(stopTimes)
+    busiest(stopSegments)
+except PermissionError:
+    raise SystemExit('Can´t write into this folder.')
+except OSError as e:
+    raise SystemExit(f'OS Error: {e}.')
+except Exception as e:
+    raise SystemExit(f'Unexpected error: {e}.')

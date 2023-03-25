@@ -52,4 +52,5 @@ Př. "991_4357_230213,7:25:00,7:25:30,U713Z102P,2,,0,0,1.389436,1,1"<br/>
 
 ## Výstup
 Program poté vypíše do terminálu 5 nejfrekventovanějších mezizastávkových úseků, počet souvisejících jízd autobusus/tramvaje a počet souvisejících linek<br/>
+Začátek vzorového výstupu<br/>
 ![Vzor](https://user-images.githubusercontent.com/116712623/227737937-48ec2089-bddc-4c39-aa19-fd0690116ba5.png)

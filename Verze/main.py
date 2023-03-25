@@ -282,7 +282,7 @@ def busiest(stopSegments) -> None:
         for route in routes:
             table.add_row(['', '', '', route])
     if len(array) < 5:
-        print(f"Nelze vypsat 5 nejfrekventovanějších mezizastávkových úseků. Nalezeno bylo pouze {len(array)} úseků.")
+        print(f"Cannot be listed 5 the busiest sections. Only {len(array)} sections were found.")
     print(table)
     
 def create_StopSegments(stopTimesT) -> None:

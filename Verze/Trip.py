@@ -20,7 +20,6 @@ class Trip():
         self.__refToSTs = []
         self.__refToRoute = route_id
         self.__tripHeadsign = trip_headsign
-        #self.__calendar = calendar
 
     def __str__(self):
         return 'trip_id: ' + self.__trip_id + ', refToRoute: ' + self.__refToRoute + ', refToSTs: ' + self.__refToSTs + ', tripHeadSign: ' + str(self.__tripHeadsign)

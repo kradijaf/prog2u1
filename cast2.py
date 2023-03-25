@@ -18,6 +18,9 @@ def __deleteUnreferenced(stopTimesDict : dict) -> dict:
 
     for key in toPop:       # deleting of invalid records in input dictionary
         stopTimesDict.pop(key)
+    if not stopTimesDict:
+        raise SystemExit('StopTime objects from which Stop, Trip and Route can be accesed don´t exist. Further calculations can´t be done.')
+    
     return stopTimesDict
 
 def referenceObjects(stops : dict, stopTimesS : dict, stopTimesT : dict, tripsR : dict, tripsT : dict, routes : dict) -> tuple[dict, dict, dict, dict, dict, dict]:

@@ -233,7 +233,7 @@ def busiest(stopSegments) -> None:
             table.add_row(['', '', '', route])
     print(table)
     
-def create_StopSegments(stopTimesS) -> None:
+def create_StopSegments(stopTimesT) -> None:
     '''
         method for creating objects of class StopSegment
         
@@ -254,7 +254,7 @@ def create_StopSegments(stopTimesS) -> None:
     finish = None
     start_id = None
     finish_id = None
-    for stopTime in stopTimesS.values():
+    for stopTime in stopTimesT.values():
         start = stopTime[0].refToStop.name
         start_id = stopTime[0].refToStop.id
         for item in stopTime[1:]:

@@ -147,7 +147,7 @@ def createObjects(stopsFile : str, stopTimesFile : str, tripsFile : str, routesF
         # function returns 6 dictionaries
         return stops, stopTimesStop_id, stopTimesTrip_id, tripsRoute_id, tripsTrip_id, routes
 
-def __deleteUnreferenced(stopTimesDict : dict) -> dict:
+def deleteUnreferenced(stopTimesDict : dict) -> dict:
     """Deletes all StopTime objects unconnected to all other classes. If list 
     containing StopTime objects is empty, deletes its key from input dictionary.\n
     
@@ -211,7 +211,7 @@ def referenceObjects(stops : dict, stopTimesS : dict, stopTimesT : dict, tripsR 
                 trip.refToRoute = route       
                 route.refToTrips.append(trip)
 
-    return __deleteUnreferenced(stopTimesT)
+    return deleteUnreferenced(stopTimesT)
 
 def merge_sort(array : list) -> list:
     '''
